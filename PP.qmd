@@ -1,0 +1,81 @@
+---
+title: "Palmer's Penguins"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+```{r}
+colnames(penguins)
+```
+
+## Distribution of a single trait
+
+### Bill length
+
+```{r}
+ggplot(data = penguins) +
+  geom_histogram(mapping = aes(x = bill_length_mm), bins = 10) +
+  facet_wrap(~species) +
+  theme_linedraw()
+```
+
+Adelie have the smallest bill length with Chinstrap and Gentoo have similar distributions
+
+## Relationship between multiple traits
+
+### Do the same species penguins on different islands have the same bill length?
+
+```{r}
+ggplot(data = penguins) +
+  geom_boxplot(mapping = aes(x = island, y = bill_length_mm)) +
+  geom_jitter(mapping = aes(x = island, y = bill_length_mm)) +
+  facet_wrap(~species) +
+  theme_linedraw()
+```
+
+Only Adelie penguins are found on the all three islands and their bill length do not seem to differ. Chinstrap and Gentoo are only found on 1 island.
+
+### Does body mass impact bill length?
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm)) +
+  geom_smooth(mapping = aes(x = body_mass_g, y = bill_length_mm)) +
+  theme_linedraw()
+```
+
+Across all penguins, the trend looks the same but there is a group of individuals with a higher bill length relative to body mass. Could that be due to a species?
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +
+  geom_smooth(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +
+  theme_linedraw()
+```
+
+Yes. That higher bill_length ratio was actually a different penguin species, Chinstrap. These curve lines look strange though. Can I improve them by using a linear model instead of the default?
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +
+  geom_smooth(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species), method = lm) +
+  theme_linedraw()
+```
+
+Yes. That looks nicer.
+
+## Levels of Sexual Dimorphism
+
+### What is the sex balance of each species?
+
+```{r}
+ggplot(data = penguins) +
+  geom_bar(mapping = aes(x = species, fill = sex))
+```
+
+Looks even to me. I wish I could show the data as percentages but not sure how
