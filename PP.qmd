@@ -63,7 +63,10 @@ Yes. That higher bill_length ratio was actually a different penguin species, Chi
 ```{r}
 ggplot(data = penguins) +
   geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +
-  geom_smooth(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species), method = lm) +
+  geom_smooth(
+    mapping = aes(x = body_mass_g, y = bill_length_mm, color = species),
+    method = lm
+  ) +
   theme_linedraw()
 ```
 
@@ -78,4 +81,17 @@ ggplot(data = penguins) +
   geom_bar(mapping = aes(x = species, fill = sex))
 ```
 
-Looks even to me. I wish I could show the data as percentages but not sure how
+Looks even to me. I wish I could show the data as percentages but not sure how. Let's look at this plot from the worksheet
+
+### Example plot from datasheet
+
+```{r}
+penguins %>%
+  ggplot(mapping = aes(x = flipper_length_mm, y = sex, color = sex)) +
+  geom_boxplot(outlier.alpha = 0, alpha = 0) +
+  geom_jitter(width = 0, size = 0.1) +
+  coord_flip() +
+  facet_wrap( ~ species)
+```
+
+Males have larger flipper lengths in all three species. Some recorded penguins don't have sex data.

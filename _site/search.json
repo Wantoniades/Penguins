@@ -1,0 +1,44 @@
+[
+  {
+    "objectID": "PP.html",
+    "href": "PP.html",
+    "title": "Palmer’s Penguins",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(palmerpenguins)\n\n\nAttaching package: 'palmerpenguins'\n\nThe following objects are masked from 'package:datasets':\n\n    penguins, penguins_raw\ncolnames(penguins)\n\n[1] \"species\"           \"island\"            \"bill_length_mm\"   \n[4] \"bill_depth_mm\"     \"flipper_length_mm\" \"body_mass_g\"      \n[7] \"sex\"               \"year\""
+  },
+  {
+    "objectID": "PP.html#distribution-of-a-single-trait",
+    "href": "PP.html#distribution-of-a-single-trait",
+    "title": "Palmer’s Penguins",
+    "section": "Distribution of a single trait",
+    "text": "Distribution of a single trait\n\nBill length\n\nggplot(data = penguins) +\n  geom_histogram(mapping = aes(x = bill_length_mm), bins = 10) +\n  facet_wrap(~species) +\n  theme_linedraw()\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_bin()`).\n\n\n\n\n\n\n\n\n\nAdelie have the smallest bill length with Chinstrap and Gentoo have similar distributions"
+  },
+  {
+    "objectID": "PP.html#relationship-between-multiple-traits",
+    "href": "PP.html#relationship-between-multiple-traits",
+    "title": "Palmer’s Penguins",
+    "section": "Relationship between multiple traits",
+    "text": "Relationship between multiple traits\n\nDo the same species penguins on different islands have the same bill length?\n\nggplot(data = penguins) +\n  geom_boxplot(mapping = aes(x = island, y = bill_length_mm)) +\n  geom_jitter(mapping = aes(x = island, y = bill_length_mm)) +\n  facet_wrap(~species) +\n  theme_linedraw()\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_boxplot()`).\n\n\nWarning: Removed 2 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\n\n\n\n\n\n\nOnly Adelie penguins are found on the all three islands and their bill length do not seem to differ. Chinstrap and Gentoo are only found on 1 island.\n\n\nDoes body mass impact bill length?\n\nggplot(data = penguins) +\n  geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm)) +\n  geom_smooth(mapping = aes(x = body_mass_g, y = bill_length_mm)) +\n  theme_linedraw()\n\n`geom_smooth()` using method = 'loess' and formula = 'y ~ x'\n\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_smooth()`).\n\n\nWarning: Removed 2 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\n\n\n\n\n\n\nAcross all penguins, the trend looks the same but there is a group of individuals with a higher bill length relative to body mass. Could that be due to a species?\n\nggplot(data = penguins) +\n  geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +\n  geom_smooth(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +\n  theme_linedraw()\n\n`geom_smooth()` using method = 'loess' and formula = 'y ~ x'\n\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_smooth()`).\n\n\nWarning: Removed 2 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\n\n\n\n\n\n\nYes. That higher bill_length ratio was actually a different penguin species, Chinstrap. These curve lines look strange though. Can I improve them by using a linear model instead of the default?\n\nggplot(data = penguins) +\n  geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +\n  geom_smooth(\n    mapping = aes(x = body_mass_g, y = bill_length_mm, color = species),\n    method = lm\n  ) +\n  theme_linedraw()\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_smooth()`).\n\n\nWarning: Removed 2 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\n\n\n\n\n\n\nYes. That looks nicer."
+  },
+  {
+    "objectID": "PP.html#levels-of-sexual-dimorphism",
+    "href": "PP.html#levels-of-sexual-dimorphism",
+    "title": "Palmer’s Penguins",
+    "section": "Levels of Sexual Dimorphism",
+    "text": "Levels of Sexual Dimorphism\n\nWhat is the sex balance of each species?\n\nggplot(data = penguins) +\n  geom_bar(mapping = aes(x = species, fill = sex))\n\n\n\n\n\n\n\n\nLooks even to me. I wish I could show the data as percentages but not sure how. Let’s look at this plot from the worksheet\n\n\nExample plot from datasheet\n\npenguins %&gt;%\n  ggplot(mapping = aes(x = flipper_length_mm, y = sex, color = sex)) +\n  geom_boxplot(outlier.alpha = 0, alpha = 0) +\n  geom_jitter(width = 0, size = 0.1) +\n  coord_flip() +\n  facet_wrap( ~ species)\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_boxplot()`).\n\n\nWarning: Removed 2 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\n\n\n\n\n\n\nMales have larger flipper lengths in all three species. Some recorded penguins don’t have sex data."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Penguins",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  }
+]
