@@ -12,6 +12,10 @@ library(palmerpenguins)
 
 ```{r}
 colnames(penguins)
+
+# Colorblind safe color theme
+okabe_ito <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
+               "#0072B2", "#D55E00", "#CC79A7", "#000000")
 ```
 
 ## Distribution of a single trait
@@ -56,6 +60,7 @@ Across all penguins, the trend looks the same but there is a group of individual
 ggplot(data = penguins) +
   geom_point(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +
   geom_smooth(mapping = aes(x = body_mass_g, y = bill_length_mm, color = species)) +
+  scale_color_manual(values = okabe_ito) +
   theme_linedraw()
 ```
 
@@ -68,6 +73,7 @@ ggplot(data = penguins) +
     mapping = aes(x = body_mass_g, y = bill_length_mm, color = species),
     method = lm
   ) +
+  scale_color_manual(values = okabe_ito) +
   theme_linedraw()
 ```
 
@@ -79,7 +85,9 @@ Yes. That looks nicer.
 
 ```{r}
 ggplot(data = penguins) +
-  geom_bar(mapping = aes(x = species, fill = sex))
+  geom_bar(mapping = aes(x = species, fill = sex)) +
+  scale_fill_manual(values = okabe_ito) +
+  theme_linedraw()
 ```
 
 Looks even to me. I wish I could show the data as percentages but not sure how. Let's look at this plot from the worksheet
